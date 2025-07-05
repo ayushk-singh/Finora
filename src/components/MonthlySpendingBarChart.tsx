@@ -9,6 +9,8 @@ import {
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
+  Tooltip,
+  Cell,
 } from "recharts";
 
 import {
@@ -19,12 +21,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -40,12 +36,20 @@ type MonthlyData = {
   total: number;
 };
 
-const chartConfig = {
-  desktop: {
-    label: "Spent",
-    color: "var(--chart-1)",
-  },
-} satisfies ChartConfig;
+const COLORS = [
+  "#4f46e5", // indigo-600
+  "#22c55e", // green-500
+  "#ef4444", // red-500
+  "#f59e0b", // amber-500
+  "#0ea5e9", // sky-500
+  "#8b5cf6", // violet-500
+  "#ec4899", // pink-500
+  "#10b981", // emerald-500
+  "#eab308", // yellow-500
+  "#3b82f6", // blue-500
+  "#a855f7", // purple-500
+  "#14b8a6", // teal-500
+];
 
 export function MonthlySpendingBarChart() {
   const [data, setData] = useState<MonthlyData[]>([]);
@@ -72,7 +76,7 @@ export function MonthlySpendingBarChart() {
           })
         );
 
-        // Sort months Jan-Dec (if not, fallback to alphabetical)
+        // Sort Jan–Dec
         const monthOrder = [
           "January",
           "February",
@@ -103,9 +107,7 @@ export function MonthlySpendingBarChart() {
     fetchData();
   }, []);
 
-  if (loading) {
-    return <Skeleton className="h-64 w-full rounded-md" />;
-  }
+  if (loading) return <Skeleton className="h-64 w-full rounded-md" />;
 
   if (!data.length) {
     return (
@@ -124,7 +126,7 @@ export function MonthlySpendingBarChart() {
         <CardDescription>Visual breakdown of your expenses</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ResponsiveContainer width="100%" height={400}>
           <BarChart
             data={data}
             layout="vertical"
@@ -139,29 +141,21 @@ export function MonthlySpendingBarChart() {
               tickMargin={10}
               axisLine={false}
             />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  hideLabel
-                  formatter={(value) => {
-                    if (typeof value === "number") {
-                      return `₹${value.toFixed(2)}`;
-                    }
-                    return value;
-                  }}
-                />
+            <Tooltip
+              formatter={(value: any) =>
+                typeof value === "number" ? `₹${value.toFixed(2)}` : value
               }
+              cursor={{ fill: "transparent" }}
             />
-
-            <Bar dataKey="total" fill="var(--color-desktop)" radius={6} />
+            <Bar dataKey="total" radius={[6, 6, 6, 6]}>
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Bar>
           </BarChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium text-green-600">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
         <div className="text-muted-foreground leading-none">
           Showing monthly totals for current year
         </div>
