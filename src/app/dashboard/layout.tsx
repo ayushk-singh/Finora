@@ -67,8 +67,8 @@ export default function DashboardLayout({
   return (
     <div
       className={cn(
-        "mx-auto flex w-full max-w-[100vw] flex-1 flex-col overflow-hidden md:flex-row",
-        "h-screen"
+        "mx-auto flex w-full max-w-[100vw] flex-1 flex-col md:flex-row",
+        "min-h-screen"
       )}
     >
       <Sidebar open={open} setOpen={setOpen} animate={false}>
