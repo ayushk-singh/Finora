@@ -6,18 +6,17 @@ import {
   SidebarLink,
 } from "@/components/ui/sidebar"
 import {
-  IconArrowLeft,
+  IconPlus,
   IconChartBar,
-  IconDashboard,
   IconHelp,
   IconListDetails,
   IconSettings,
 } from "@tabler/icons-react"
-import { motion } from "motion/react"
 import { cn } from "@/lib/utils"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 
-// Hook to detect mobile for auto close
+
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false)
   useEffect(() => {
@@ -41,7 +40,7 @@ export default function DashboardLayout({
     {
       label: "Add Transaction",
       href: "/dashboard/add",
-      icon: <IconDashboard className="h-5 w-5 shrink-0 text-muted-foreground" />,
+      icon: <IconPlus className="h-5 w-5 shrink-0 text-muted-foreground" />,
     },
     {
       label: "All Transactions",
@@ -62,11 +61,6 @@ export default function DashboardLayout({
       label: "Help",
       href: "/dashboard/help",
       icon: <IconHelp className="h-5 w-5 shrink-0 text-muted-foreground" />,
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-      icon: <IconArrowLeft className="h-5 w-5 shrink-0 text-muted-foreground" />,
     },
   ]
 
@@ -113,14 +107,12 @@ function Logo() {
       href="#"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-foreground"
     >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-primary" />
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="font-medium whitespace-pre text-foreground"
-      >
-        Acet Labs
-      </motion.span>
+      <Image
+      src="/logo.png"
+      alt="logo"
+      width="100"
+      height="100"
+      />
     </a>
   )
 }
@@ -131,7 +123,12 @@ function LogoIcon() {
       href="#"
       className="relative z-20 flex items-center space-x-2 py-1 text-sm font-normal text-foreground"
     >
-      <div className="h-5 w-6 shrink-0 rounded-tl-lg rounded-tr-sm rounded-br-lg rounded-bl-sm bg-primary" />
+      <Image
+      src="/logo.png"
+      alt="logo"
+      width="100"
+      height="100"
+      />
     </a>
   )
 }

@@ -1,16 +1,26 @@
 import { dbConnect } from "@/lib/dbConnect";
 import { Transaction } from "@/models/Transaction";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   await dbConnect();
   const data = await req.json();
-  const updated = await Transaction.findByIdAndUpdate(params.id, data, { new: true });
+  const { id } = await context.params;
+
+  const updated = await Transaction.findByIdAndUpdate(id, data, { new: true });
+
   return NextResponse.json(updated);
 }
 
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  _req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   await dbConnect();
-  await Transaction.findByIdAndDelete(params.id);
+  const { id } = await context.params;
+  await Transaction.findByIdAndDelete(id);
   return NextResponse.json({ success: true });
 }

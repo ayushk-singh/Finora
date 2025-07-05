@@ -5,11 +5,18 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
 
 const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
@@ -45,7 +52,7 @@ export function AddTransactionForm() {
       toast.success("Transaction added")
       form.reset()
     } catch (error) {
-      toast.error("Something went wrong")
+      toast.error(`Something went wrong: ${error}`)
     } finally {
       setLoading(false)
     }
@@ -67,7 +74,7 @@ export function AddTransactionForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="amount"
@@ -81,7 +88,7 @@ export function AddTransactionForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="date"
@@ -95,8 +102,9 @@ export function AddTransactionForm() {
             </FormItem>
           )}
         />
-        
+
         <Button type="submit" disabled={loading}>
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {loading ? "Adding..." : "Add Transaction"}
         </Button>
       </form>

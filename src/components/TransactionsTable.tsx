@@ -1,89 +1,105 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { useEffect, useState } from "react"
-import { Pencil, Trash } from "lucide-react"
-import { toast } from "sonner"
+} from "@tanstack/react-table";
+import { useEffect, useState } from "react";
+import { Pencil, Trash, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Skeleton } from "@/components/ui/skeleton"
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Transaction = {
-  _id: string
-  description: string
-  amount: number
-  date: string
-}
+  _id: string;
+  description: string;
+  amount: number;
+  date: string;
+};
 
 export function TransactionsTable() {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-  const [loading, setLoading] = useState(true)
-  const [editing, setEditing] = useState<Transaction | null>(null)
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
 
+  const [editing, setEditing] = useState<Transaction | null>(null);
   const [editForm, setEditForm] = useState({
     description: "",
     amount: "",
     date: "",
-  })
+  });
+  const [saving, setSaving] = useState(false);
+
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchTransactions = async () => {
     try {
-      const res = await fetch("/api/transactions")
-      const data = await res.json()
-      setTransactions(data)
+      const res = await fetch("/api/transactions");
+      const data = await res.json();
+      setTransactions(data);
     } catch {
-      toast.error("Failed to fetch transactions")
+      toast.error("Failed to fetch transactions");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchTransactions()
-  }, [])
+    fetchTransactions();
+  }, []);
 
-  const handleDelete = async (id: string) => {
-    const confirmDelete = confirm("Are you sure?")
-    if (!confirmDelete) return
+  const handleDelete = async () => {
+    if (!deletingId) return;
 
+    setDeleting(true);
     try {
-      const res = await fetch(`/api/transactions/${id}`, {
+      const res = await fetch(`/api/transactions/${deletingId}`, {
         method: "DELETE",
-      })
-      if (!res.ok) throw new Error()
-      toast.success("Transaction deleted")
-      fetchTransactions()
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Transaction deleted");
+      fetchTransactions();
+      setDeletingId(null);
     } catch {
-      toast.error("Delete failed")
+      toast.error("Delete failed");
+    } finally {
+      setDeleting(false);
     }
-  }
+  };
 
   const handleEdit = (tx: Transaction) => {
-    setEditing(tx)
+    setEditing(tx);
     setEditForm({
       description: tx.description,
       amount: tx.amount.toString(),
       date: tx.date.split("T")[0],
-    })
-  }
+    });
+  };
 
   const handleEditSubmit = async () => {
-    if (!editing) return
+    if (!editing) return;
 
+    setSaving(true);
     try {
       const res = await fetch(`/api/transactions/${editing._id}`, {
         method: "PUT",
@@ -92,15 +108,17 @@ export function TransactionsTable() {
           ...editForm,
           amount: parseFloat(editForm.amount),
         }),
-      })
-      if (!res.ok) throw new Error()
-      toast.success("Updated successfully")
-      setEditing(null)
-      fetchTransactions()
+      });
+      if (!res.ok) throw new Error();
+      toast.success("Updated successfully");
+      setEditing(null);
+      fetchTransactions();
     } catch {
-      toast.error("Update failed")
+      toast.error("Update failed");
+    } finally {
+      setSaving(false);
     }
-  }
+  };
 
   const columns: ColumnDef<Transaction>[] = [
     {
@@ -122,7 +140,7 @@ export function TransactionsTable() {
       id: "actions",
       header: "Actions",
       cell: ({ row }) => {
-        const tx = row.original
+        const tx = row.original;
         return (
           <div className="flex gap-2">
             <Button variant="ghost" size="icon" onClick={() => handleEdit(tx)}>
@@ -131,21 +149,21 @@ export function TransactionsTable() {
             <Button
               variant="destructive"
               size="icon"
-              onClick={() => handleDelete(tx._id)}
+              onClick={() => setDeletingId(tx._id)}
             >
               <Trash className="w-4 h-4" />
             </Button>
           </div>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const table = useReactTable({
     data: transactions,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  })
+  });
 
   if (loading) {
     return (
@@ -154,11 +172,11 @@ export function TransactionsTable() {
           <Skeleton key={i} className="h-12 w-full rounded" />
         ))}
       </div>
-    )
+    );
   }
 
   if (transactions.length === 0) {
-    return <p className="text-muted-foreground">No transactions found.</p>
+    return <p className="text-muted-foreground">No transactions found.</p>;
   }
 
   return (
@@ -170,7 +188,10 @@ export function TransactionsTable() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {flexRender(header.column.columnDef.header, header.getContext())}
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -181,7 +202,10 @@ export function TransactionsTable() {
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -190,6 +214,7 @@ export function TransactionsTable() {
         </Table>
       </div>
 
+      {/* Edit Dialog */}
       <Dialog open={!!editing} onOpenChange={() => setEditing(null)}>
         <DialogContent>
           <DialogHeader>
@@ -225,10 +250,39 @@ export function TransactionsTable() {
                 }
               />
             </div>
-            <Button onClick={handleEditSubmit}>Save Changes</Button>
+            <Button onClick={handleEditSubmit} disabled={saving}>
+              {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {saving ? "Saving..." : "Save Changes"}
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deletingId} onOpenChange={() => setDeletingId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Transaction</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            Are you sure you want to delete this transaction? This action cannot
+            be undone.
+          </p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeletingId(null)}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deleting}
+            >
+              {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {deleting ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
-  )
+  );
 }

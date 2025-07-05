@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TrendingUp } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -37,18 +36,18 @@ type MonthlyData = {
 };
 
 const COLORS = [
-  "#4f46e5", // indigo-600
-  "#22c55e", // green-500
-  "#ef4444", // red-500
-  "#f59e0b", // amber-500
-  "#0ea5e9", // sky-500
-  "#8b5cf6", // violet-500
-  "#ec4899", // pink-500
-  "#10b981", // emerald-500
-  "#eab308", // yellow-500
-  "#3b82f6", // blue-500
-  "#a855f7", // purple-500
-  "#14b8a6", // teal-500
+  "#4f46e5",
+  "#22c55e",
+  "#ef4444",
+  "#f59e0b",
+  "#0ea5e9",
+  "#8b5cf6",
+  "#ec4899",
+  "#10b981",
+  "#eab308",
+  "#3b82f6",
+  "#a855f7",
+  "#14b8a6",
 ];
 
 export function MonthlySpendingBarChart() {
@@ -76,7 +75,6 @@ export function MonthlySpendingBarChart() {
           })
         );
 
-        // Sort Jan–Dec
         const monthOrder = [
           "January",
           "February",
@@ -97,7 +95,7 @@ export function MonthlySpendingBarChart() {
         );
 
         setData(sorted);
-      } catch (err) {
+      } catch {
         toast.error("Failed to load analytics");
       } finally {
         setLoading(false);
@@ -142,14 +140,17 @@ export function MonthlySpendingBarChart() {
               axisLine={false}
             />
             <Tooltip
-              formatter={(value: any) =>
+              formatter={(value: number | string) =>
                 typeof value === "number" ? `₹${value.toFixed(2)}` : value
               }
               cursor={{ fill: "transparent" }}
             />
             <Bar dataKey="total" radius={[6, 6, 6, 6]}>
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
               ))}
             </Bar>
           </BarChart>
