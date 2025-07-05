@@ -30,7 +30,7 @@ const Hero = ({
   buttons = {
     primary: {
       text: "Get Started",
-      url: "#/dashboard/add",
+      url: "/dashboard/add",
     }
   },
 }: HeroProps) => {
