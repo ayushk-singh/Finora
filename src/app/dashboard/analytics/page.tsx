@@ -1,10 +1,12 @@
 import React from "react";
 import { MonthlySpendingBarChart } from "@/components/MonthlySpendingBarChart";
+import Dashboard from "@/components/DashboardCard";
 
 function page() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-2">Analytics</h1>
+      <Dashboard/>
       <MonthlySpendingBarChart />
     </div>
   );

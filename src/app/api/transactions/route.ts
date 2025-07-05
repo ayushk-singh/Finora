@@ -11,6 +11,30 @@ export async function GET() {
 export async function POST(req: Request) {
   await dbConnect();
   const body = await req.json();
-  const tx = await Transaction.create(body);
-  return NextResponse.json(tx, { status: 201 });
+
+  const { description, amount, date, category } = body;
+  if (!description || !amount || !date || !category) {
+    return NextResponse.json(
+      {
+        error: "All fields (description, amount, date, category) are required.",
+      },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const tx = await Transaction.create({
+      description,
+      amount,
+      date,
+      category,
+    });
+    return NextResponse.json(tx, { status: 201 });
+  } catch {
+    console.error("Error creating transaction:");
+    return NextResponse.json(
+      { error: "Failed to create transaction." },
+      { status: 500 }
+    );
+  }
 }

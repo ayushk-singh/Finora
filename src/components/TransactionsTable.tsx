@@ -35,6 +35,7 @@ type Transaction = {
   description: string;
   amount: number;
   date: string;
+  category: string;
 };
 
 export function TransactionsTable() {
@@ -46,6 +47,7 @@ export function TransactionsTable() {
     description: "",
     amount: "",
     date: "",
+    category: "",
   });
   const [saving, setSaving] = useState(false);
 
@@ -93,6 +95,7 @@ export function TransactionsTable() {
       description: tx.description,
       amount: tx.amount.toString(),
       date: tx.date.split("T")[0],
+      category: tx.category || "",
     });
   };
 
@@ -129,6 +132,10 @@ export function TransactionsTable() {
       accessorKey: "amount",
       header: "Amount",
       cell: ({ getValue }) => `₹ ${Number(getValue()).toFixed(2)}`,
+    },
+    {
+      accessorKey: "category",
+      header: "Category",
     },
     {
       accessorKey: "date",
@@ -249,6 +256,25 @@ export function TransactionsTable() {
                   setEditForm({ ...editForm, date: e.target.value })
                 }
               />
+            </div>
+            <div>
+              <Label>Category</Label>
+              <select
+                value={editForm.category}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, category: e.target.value })
+                }
+                className="w-full border rounded p-2 bg-background text-foreground"
+              >
+                <option value="">Select a category</option>
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Bills">Bills</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Health">Health</option>
+                <option value="Other">Other</option>
+              </select>
             </div>
             <Button onClick={handleEditSubmit} disabled={saving}>
               {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

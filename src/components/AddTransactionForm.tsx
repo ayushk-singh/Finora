@@ -22,6 +22,7 @@ const formSchema = z.object({
   description: z.string().min(1, "Description is required"),
   amount: z.coerce.number().gt(0, "Amount must be greater than 0"),
   date: z.string().min(1, "Date is required"),
+  category: z.string().min(1, "Category is required"),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -33,6 +34,7 @@ export function AddTransactionForm() {
       description: "",
       amount: 0,
       date: new Date().toISOString().split("T")[0],
+      category: "",
     },
   })
 
@@ -97,6 +99,32 @@ export function AddTransactionForm() {
               <Label>Date</Label>
               <FormControl>
                 <Input type="date" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="category"
+          render={({ field }) => (
+            <FormItem>
+              <Label>Category</Label>
+              <FormControl>
+                <select
+                  {...field}
+                  className="w-full border rounded p-2 bg-background text-foreground"
+                >
+                  <option value="">Select a category</option>
+                  <option value="Food">Food</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Bills">Bills</option>
+                  <option value="Shopping">Shopping</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Health">Health</option>
+                  <option value="Other">Other</option>
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>
