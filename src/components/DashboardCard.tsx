@@ -1,12 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+} from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MonthlySpendingBarChart } from "./MonthlySpendingBarChart";
+import { BudgetComparisonChart } from "./BudgetComparisonChart";
 
-// Colors for chart
 const COLORS = [
   "#4f46e5",
   "#22c55e",
@@ -16,7 +27,6 @@ const COLORS = [
   "#8b5cf6",
 ];
 
-// Define types
 type Transaction = {
   _id: string;
   description: string;
@@ -41,12 +51,16 @@ export default function Dashboard() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  });
+
   useEffect(() => {
     async function fetchSummary() {
       const res = await fetch("/api/transactions/summary");
       const data = await res.json();
 
-      // Add 'name' field for recharts label
       const updatedBreakdown = data.categoryBreakdown.map(
         (entry: { category: string; total: number }) => ({
           ...entry,
@@ -139,6 +153,24 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
+        {/* Month Picker + Budget Comparison Chart */}
+        <div className="md:col-span-3 space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Select Month</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <input
+                type="month"
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="border rounded-md px-3 py-2 text-sm"
+              />
+              <BudgetComparisonChart month={selectedMonth} />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

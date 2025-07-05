@@ -6,7 +6,8 @@ import {
   IconChartBar,
   IconHelp,
   IconListDetails,
-  IconSettings,
+  IconCash,
+  IconRobotFace,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
@@ -45,14 +46,21 @@ export default function DashboardLayout({
       ),
     },
     {
+      label: "Budget",
+      href: "/dashboard/budget",
+      icon: (
+        <IconCash className="h-5 w-5 shrink-0 text-muted-foreground" />
+      ),
+    },
+    {
       label: "Analytics",
       href: "/dashboard/analytics",
       icon: <IconChartBar className="h-5 w-5 shrink-0 text-muted-foreground" />,
     },
     {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: <IconSettings className="h-5 w-5 shrink-0 text-muted-foreground" />,
+      label: "AI Insight",
+      href: "/dashboard/insight",
+      icon: <IconRobotFace className="h-5 w-5 shrink-0 text-muted-foreground" />,
     },
     {
       label: "Help",
