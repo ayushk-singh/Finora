@@ -70,13 +70,13 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.9846 0.0017 247.8389);
-  --foreground: oklch(0.2795 0.0368 260.0310);
+  --background: oklch(0.9851 0 0);
+  --foreground: oklch(0.2101 0.0318 264.6645);
   --card: oklch(1.0000 0 0);
-  --card-foreground: oklch(0.2795 0.0368 260.0310);
+  --card-foreground: oklch(0.2101 0.0318 264.6645);
   --popover: oklch(1.0000 0 0);
   --popover-foreground: oklch(0.2795 0.0368 260.0310);
-  --primary: oklch(0.7137 0.1434 254.6240);
+  --primary: oklch(0.5854 0.2041 277.1173);
   --primary-foreground: oklch(1.0000 0 0);
   --secondary: oklch(0.8276 0.1013 230.3179);
   --secondary-foreground: oklch(1.0000 0 0);
@@ -84,10 +84,10 @@
   --muted-foreground: oklch(0.5510 0.0234 264.3637);
   --accent: oklch(0.8114 0.0290 222.3627);
   --accent-foreground: oklch(0.2795 0.0368 260.0310);
-  --destructive: oklch(0.6368 0.2078 25.3313);
+  --destructive: oklch(0.5771 0.2152 27.3250);
   --border: oklch(0.8717 0.0093 258.3382);
   --input: oklch(0.9670 0.0029 264.5419);
-  --ring: oklch(0.7137 0.1434 254.6240);
+  --ring: oklch(0.5854 0.2041 277.1173);
   --chart-1: oklch(0.7090 0.1592 293.5412);
   --chart-2: oklch(0.8452 0.1299 164.9782);
   --chart-3: oklch(0.8369 0.1644 84.4286);
@@ -95,12 +95,12 @@
   --chart-5: oklch(0.6231 0.1880 259.8145);
   --sidebar: oklch(0.9670 0.0029 264.5419);
   --sidebar-foreground: oklch(0.2795 0.0368 260.0310);
-  --sidebar-primary: oklch(0.7137 0.1434 254.6240);
+  --sidebar-primary: oklch(0.5854 0.2041 277.1173);
   --sidebar-primary-foreground: oklch(1.0000 0 0);
   --sidebar-accent: oklch(0.8114 0.0290 222.3627);
   --sidebar-accent-foreground: oklch(0.2795 0.0368 260.0310);
   --sidebar-border: oklch(0.8717 0.0093 258.3382);
-  --sidebar-ring: oklch(0.7137 0.1434 254.6240);
+  --sidebar-ring: oklch(0.5854 0.2041 277.1173);
   --destructive-foreground: oklch(1.0000 0 0);
   --font-sans: Inter, sans-serif;
   --font-serif: Lora, serif;
@@ -125,24 +125,24 @@
 }
 
 .dark {
-  --background: oklch(0.2795 0.0368 260.0310);
-  --foreground: oklch(0.9288 0.0126 255.5078);
+  --background: oklch(0.2101 0.0318 264.6645);
+  --foreground: oklch(0.9851 0 0);
   --card: oklch(0.3717 0.0392 257.2870);
   --card-foreground: oklch(0.9288 0.0126 255.5078);
   --popover: oklch(0.3717 0.0392 257.2870);
   --popover-foreground: oklch(0.9288 0.0126 255.5078);
-  --primary: oklch(0.7137 0.1434 254.6240);
-  --primary-foreground: oklch(0.2795 0.0368 260.0310);
+  --primary: oklch(0.5854 0.2041 277.1173);
+  --primary-foreground: oklch(0.9288 0.0126 255.5078);
   --secondary: oklch(0.8276 0.1013 230.3179);
   --secondary-foreground: oklch(0.2795 0.0368 260.0310);
   --muted: oklch(0.3717 0.0392 257.2870);
   --muted-foreground: oklch(0.7107 0.0351 256.7878);
   --accent: oklch(0.8114 0.0290 222.3627);
-  --accent-foreground: oklch(0.2795 0.0368 260.0310);
-  --destructive: oklch(0.6368 0.2078 25.3313);
+  --accent-foreground: oklch(0.9288 0.0126 255.5078);
+  --destructive: oklch(0.5771 0.2152 27.3250);
   --border: oklch(0.3717 0.0392 257.2870);
   --input: oklch(0.3717 0.0392 257.2870);
-  --ring: oklch(0.7137 0.1434 254.6240);
+  --ring: oklch(0.5854 0.2041 277.1173);
   --chart-1: oklch(0.7090 0.1592 293.5412);
   --chart-2: oklch(0.8452 0.1299 164.9782);
   --chart-3: oklch(0.8369 0.1644 84.4286);
@@ -150,12 +150,12 @@
   --chart-5: oklch(0.6231 0.1880 259.8145);
   --sidebar: oklch(0.3125 0.0331 262.8834);
   --sidebar-foreground: oklch(0.9288 0.0126 255.5078);
-  --sidebar-primary: oklch(0.7137 0.1434 254.6240);
-  --sidebar-primary-foreground: oklch(0.2795 0.0368 260.0310);
+  --sidebar-primary: oklch(0.5854 0.2041 277.1173);
+  --sidebar-primary-foreground: oklch(0.9288 0.0126 255.5078);
   --sidebar-accent: oklch(0.8114 0.0290 222.3627);
   --sidebar-accent-foreground: oklch(0.2795 0.0368 260.0310);
   --sidebar-border: oklch(0.3717 0.0392 257.2870);
-  --sidebar-ring: oklch(0.7137 0.1434 254.6240);
+  --sidebar-ring: oklch(0.5854 0.2041 277.1173);
   --destructive-foreground: oklch(0.9288 0.0126 255.5078);
   --radius: 0.5rem;
   --font-sans: Inter, sans-serif;
